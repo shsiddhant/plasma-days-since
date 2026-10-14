@@ -1,0 +1,21 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "sharmasiddhant@proton.me",
+        "Name": "Siddhant Sharma"
+      }
+    ],
+    "Category": "Date and Time",
+    "Description": "View number of days since significant dates.",
+    "Icon": "view-calendar-day",
+    "Id": "com.github.shsiddhant.plasma-days-since",
+    "License": "GPL-3.0+",
+    "Name": "Plasma Days Since",
+    "Version": "1.0.0",
+    "Website": "https://github.com/shsiddhant/plasma-days-since",
+    "BugReportUrl": "https://github.com/shsiddhant/plasma-days-since/issues"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0",
+  "KPackageStructure": "Plasma/Applet"
+}
