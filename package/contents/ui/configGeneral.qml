@@ -20,16 +20,17 @@ Kirigami.ScrollablePage {
     property string newTitle: ""
     property string newDate: ""
     property string errorMessage: ""
+    property bool fieldsValid: false
 
     ListModel {
         id: localEventsModel
     }
 
     function loadConfigEvents() {
-		let rawJson = Plasmoid.configuration.eventsJson;
-		let events = Utils.parseEventsJson(rawJson);
+        let rawJson = Plasmoid.configuration.eventsJson;
+        let events = Utils.parseEventsJson(rawJson);
 
-		localEventsModel.clear();
+        localEventsModel.clear();
         for (let event of events) {
             localEventsModel.append(event);
         }
@@ -42,10 +43,10 @@ Kirigami.ScrollablePage {
         width: parent.width
 
         Kirigami.Heading {
-			text: i18n("Add events")
-			level: 4
-			Layout.leftMargin: Kirigami.Units.largeSpacing
-		}
+            text: i18n("Add events")
+            level: 4
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+        }
 
         Kirigami.FormLayout {
             QQC2.TextField {
@@ -80,8 +81,7 @@ Kirigami.ScrollablePage {
             QQC2.Button {
                 text: i18n("Add Event")
                 icon.name: "list-add"
-                enabled: (configRoot.newTitle && configRoot.newTitle.trim() !== "") && (configRoot.newDate && configRoot.newDate.trim() !== "") && configRoot.errorMessage === ""
-
+                enabled: configRoot.fieldsValid
                 onClicked: configRoot.commitEvent()
             }
         }
@@ -102,7 +102,7 @@ Kirigami.ScrollablePage {
             spacing: Kirigami.Units.smallSpacing
 
             delegate: Kirigami.AbstractCard {
-				id: itemDelegate
+                id: itemDelegate
                 width: eventsListView.width
 
                 required property string title
@@ -142,13 +142,25 @@ Kirigami.ScrollablePage {
     }
 
     function validateFields() {
-        if (configRoot.newDate.trim() === "") {
-            configRoot.errorMessage = "";
+        const title = configRoot.newTitle.trim();
+        const inputDate = configRoot.newDate.trim();
+
+        if (title === "") {
+			configRoot.errorMessage = "";
+            configRoot.fieldsValid = false;
             return;
         }
+
+        if (inputDate === "" || inputDate.length < 10) {
+            configRoot.errorMessage = "";
+            configRoot.fieldsValid = false;
+            return;
+        }
+
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateRegex.test(configRoot.newDate)) {
             configRoot.errorMessage = i18n("Format must be exactly YYYY-MM-DD");
+            configRoot.fieldsValid = false;
             return;
         }
         const parsedDate = Date.fromLocaleString(Qt.locale(), configRoot.newDate, "yyyy-MM-dd");
@@ -158,11 +170,12 @@ Kirigami.ScrollablePage {
         }
 
         configRoot.errorMessage = "";
+        configRoot.fieldsValid = true;
     }
 
     function commitEvent() {
-		let rawJson = Plasmoid.configuration.eventsJson;
-		let currentEvents = Utils.parseEventsJson(rawJson);
+        let rawJson = Plasmoid.configuration.eventsJson;
+        let currentEvents = Utils.parseEventsJson(rawJson);
         currentEvents.push({
             "title": String(configRoot.newTitle).trim(),
             "date": String(configRoot.newDate).trim()
@@ -177,12 +190,12 @@ Kirigami.ScrollablePage {
     }
 
     function deleteEvent(targetIndex) {
-		let rawJson = Plasmoid.configuration.eventsJson;
-		let currentEvents = Utils.parseEventsJson(rawJson);
-		if (targetIndex >= 0 && targetIndex < currentEvents.length) {
-			currentEvents.splice(targetIndex, 1);
-			Plasmoid.configuration.eventsJson = JSON.stringify(currentEvents);
-			configRoot.loadConfigEvents();
-		}
+        let rawJson = Plasmoid.configuration.eventsJson;
+        let currentEvents = Utils.parseEventsJson(rawJson);
+        if (targetIndex >= 0 && targetIndex < currentEvents.length) {
+            currentEvents.splice(targetIndex, 1);
+            Plasmoid.configuration.eventsJson = JSON.stringify(currentEvents);
+            configRoot.loadConfigEvents();
+        }
     }
 }
