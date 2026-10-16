@@ -51,6 +51,6 @@ function getMillisecondsUntilMidnight() {
     let delta = midnight.getTime() - now.getTime();
 
     // 1 second safety
-    return Math.max(diff, 1000);
+    return Math.max(delta, 1000);
 }
 
