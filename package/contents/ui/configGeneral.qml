@@ -146,7 +146,7 @@ Kirigami.ScrollablePage {
         const inputDate = configRoot.newDate.trim();
 
         if (title === "") {
-			configRoot.errorMessage = "";
+            configRoot.errorMessage = "";
             configRoot.fieldsValid = false;
             return;
         }

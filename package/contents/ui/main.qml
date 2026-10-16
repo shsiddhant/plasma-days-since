@@ -79,18 +79,18 @@ PlasmoidItem {
             }
 
             PlasmaExtras.PlaceholderMessage {
-			  id: placeholder
+                id: placeholder
 
-			  anchors.centerIn: parent
-			  anchors.verticalCenterOffset: 2 * Kirigami.Units.gridUnit
-			  width: parent.width - (Kirigami.Units.largeSpacing * 4)
-			  height: parent.height
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: 2 * Kirigami.Units.gridUnit
+                width: parent.width - (Kirigami.Units.largeSpacing * 4)
+                height: parent.height
 
-			  visible: listview.count == 0
-			  iconName: "appointment-new"
-			  text: i18n("No events added")
-			  explanation: i18n("Add events in widget configuration to see them here.")
-			}
+                visible: listview.count == 0
+                iconName: "appointment-new"
+                text: i18n("No events added")
+                explanation: i18n("Add events in widget configuration to see them here.")
+            }
         }
     }
 }
