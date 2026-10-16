@@ -26,6 +26,17 @@ PlasmoidItem {
         id: daysSinceModel
     }
 
+    Timer {
+        id: midnightTimer
+        running: true
+        repeat: true
+        interval: Utils.getMillisecondsUntilMidnight()
+        onTriggered: {
+            root.refreshData();
+            interval = Utils.getMillisecondsUntilMidnight();
+        }
+    }
+
     function refreshData() {
         let rawJson = Plasmoid.configuration.eventsJson;
         let events = Utils.parseEventsJson(rawJson);

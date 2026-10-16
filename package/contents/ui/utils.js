@@ -45,3 +45,12 @@ function calculateDaysSince(eventArray) {
     });
 }
 
+function getMillisecondsUntilMidnight() {
+    let now = new Date();
+    let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    let delta = midnight.getTime() - now.getTime();
+
+    // 1 second safety
+    return Math.max(diff, 1000);
+}
+
